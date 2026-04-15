@@ -1,6 +1,6 @@
 This repository serves as an example to demonstrate the widget injection.
 
-- Navigate to bq-host-demo (cd bq-host-demo)
+- Navigate to bq-host-demo if you aren't there already (cd bq-host-demo)
 - npm install
 - npm run dev
 
