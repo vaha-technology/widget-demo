@@ -42,11 +42,11 @@ declare global {
  * e.g. <BioniqQuizWidget questionnaire_key="go_memory_preset_quiz" /> will fetch memory quiz
  */
 
-const other_questionnaires = [
-  "go_female_preset_quiz",
-  "go_memory_preset_quiz",
-  "bioniq-questionnaire-shopify",
-];
+// const other_questionnaires = [
+//   "go_female_preset_quiz",
+//   "go_memory_preset_quiz",
+//   "bioniq-questionnaire-shopify",
+// ];
 
 /**
  * before finishing quiz, go to https://my-global-dev.bioniq.com/
