@@ -13,11 +13,7 @@ const DEFAULTS = {
   host_context: "react-demo",
   callback_url: "https://bioniq.com/products/go",
   selector: "#app",
-  additional_data: JSON.stringify(
-    { source: "direct-mail", camp_id: "summer_26" },
-    null,
-    2
-  ),
+  additional_data: JSON.stringify({ source: "direct-mail" }, null, 2),
 };
 
 export const BioniqPlayground = () => {
