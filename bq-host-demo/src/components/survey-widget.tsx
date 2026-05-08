@@ -1,125 +1,61 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, memo } from "react";
 
-// interface definition
 export interface BioniqSurveyConfig {
-  // questionnaire_key: use to fetch specific questionnaire for the host
   questionnaire_key: string;
-  // questionnaire_theme: leave out for now
-  questionnaire_theme?: string;
-  // callback_url: where the widget should redirect
-  // formula_draft_uuid will be added to the url by the widget
   callback_url: string;
-  distributor_id?: number | string;
-  country_code?: string;
-  // pass here "herbalife", "dscommerce", "shopify"
   host_context: string;
-  // this is the DOM element to be used, e.g. #bq-survey - remember about #
   selector: string;
-  // tbd
-  additional_data?: Record<string, any>;
-  email_to_prefill?: string;
-  name_to_prefill?: string;
-  // listener for host app callback
   onInit: () => void;
+  [key: string]: any;
 }
 
-interface BioniqQuizWidgetProps extends Partial<BioniqSurveyConfig> {
-  // Optional: Event Callbacks
-  onVueAppReady?: (event: CustomEvent) => void;
-  onQuizFinished?: (event: CustomEvent) => void;
-}
-
-// don't forget about types
 declare global {
   interface Window {
-    bqSurvey: {
-      init?: (config: BioniqSurveyConfig) => void;
-    };
+    bqSurvey?: { init?: (config: BioniqSurveyConfig) => void };
+    quiz?: { init?: (config: BioniqSurveyConfig) => void };
   }
 }
 
-/**
- * this is the config object with the DEFAULT values
- * the properties used in <BioniqQuizWidget /> overrides
- * e.g. <BioniqQuizWidget questionnaire_key="go_memory_preset_quiz" /> will fetch memory quiz
- */
-
-// const other_questionnaires = [
-//   "go_female_preset_quiz",
-//   "go_memory_preset_quiz",
-//   "bioniq-questionnaire-shopify",
-// ];
-
-/**
- * before finishing quiz, go to https://my-global-dev.bioniq.com/
- * login with the password "bioniq"
- * only then the demo callback_url will work
- */
-const defaults: BioniqSurveyConfig = {
-  questionnaire_key: "bioniq-questionnaire-shopify",
-  questionnaire_theme: "blue_orange",
-  callback_url: `https://bioniq.com/products/go`,
-  distributor_id: 1234,
-  country_code: "GB",
-  host_context: "react-demo",
-  selector: "#app",
-  email_to_prefill: "igor@bioniq.com",
-  // name_to_prefill: "additional details",
-  onInit: () => console.log("[Host App] Widget initialized with defaults"),
-};
-
-export const BioniqQuizWidget = (props: BioniqQuizWidgetProps) => {
-  // this is to prevent multiple callbacks registration
-  const listenersAttached = useRef(false);
+export const BioniqQuizWidget = memo((props: any) => {
+  // CRITICAL: This ref ensures we only ever call .init() ONCE per page load
+  const hasInitialized = useRef(false);
 
   useEffect(() => {
-    /**
-     * Bioniq Widget requires JS and CSS files to be injected
-     * The pair is unique per environment - the host app shall manage the storage
-     * recommendation is to use env
-     */
+    // 1. If we've already started the process, get out.
+    if (hasInitialized.current) return;
+
     const jsUrl = import.meta.env.VITE_BIONIQ_JS_URL;
     const cssUrl = import.meta.env.VITE_BIONIQ_CSS_URL;
+    const mountId = props.selector?.replace("#", "") || "app";
 
-    /** optional start - register event listeners */
-    const handleReady = (e: Event) => {
-      console.log("[Host App] ✅ vue_app_ready");
-      if (props.onVueAppReady) props.onVueAppReady(e as CustomEvent);
-    };
-
-    const handleFinished = (e: Event) => {
-      console.log("[Host App] ✅ bqSurvey:quizFinished");
-      if (props.onQuizFinished) props.onQuizFinished(e as CustomEvent);
-    };
-
-    if (!listenersAttached.current) {
-      console.log("[Host App] Attaching Listeners");
-      window.addEventListener("vue_app_ready", handleReady);
-      window.addEventListener("bqSurvey:quizFinished", handleFinished);
-      listenersAttached.current = true;
-    }
-    /** optional end - register event listeners */
-
-    /**
-     * function to start the widget
-     * window.bqSurvey is initialized by the SDK widget
-     */
     const startWidget = () => {
-      if (window.bqSurvey?.init) {
-        const finalConfig = {
-          ...defaults,
+      // Double check the lock inside the timer
+      if (hasInitialized.current) return;
+
+      const sdk = window.bqSurvey || window.quiz;
+      const el = document.getElementById(mountId);
+
+      if (el && sdk?.init) {
+        console.log("[Diagnostic] Handshake Success. Mounting...");
+        hasInitialized.current = true; // LOCK SET
+
+        const config = {
+          questionnaire_key: "bioniq-questionnaire-shopify",
+          callback_url: "https://bioniq.com/products/go",
+          host_context: "react-demo",
+          selector: `#${mountId}`,
+          onInit: () => console.log("[Diagnostic] Widget mounted."),
           ...props,
         };
 
-        console.log("[Host App] Initializing with config:", finalConfig);
-
-        window.bqSurvey.init(finalConfig);
+        sdk.init(config);
       } else {
-        console.log("[Host App] widget did not initialize");
+        console.log("[Diagnostic] Waiting for SDK or DOM...");
+        setTimeout(startWidget, 100);
       }
     };
 
-    // CSS injection
+    // Asset Injection
     if (cssUrl && !document.querySelector(`link[href="${cssUrl}"]`)) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
@@ -139,37 +75,14 @@ export const BioniqQuizWidget = (props: BioniqQuizWidgetProps) => {
         startWidget();
       }
     }
-
-    return () => {
-      console.log("[Host App] Cleaning Up");
-      window.removeEventListener("vue_app_ready", handleReady);
-      window.removeEventListener("bqSurvey:quizFinished", handleFinished);
-      listenersAttached.current = false;
-    };
-  }, [props]);
-
-  const mountId = props.selector?.replace("#", "") || "app";
+  }, []); // Only runs on mount
 
   return (
-    <>
-      {/** use custom styles in the parent
-       * be sure to use mountId for widget scoping
-       */}
-      <style>
-        {`
-          #${mountId} .bq-question-layout .bq-button-one-container { 
-            background: #266431 !important; 
-          }
-          
-          /* You can add more overrides here easily */
-          #${mountId} .some-other-class {
-            color: red;
-          }
-        `}
-      </style>
-      <div className="bioniq-widget-wrapper">
-        <div id={mountId}></div>
-      </div>
-    </>
+    <div
+      className="bioniq-widget-wrapper"
+      style={{ height: "100%", width: "100%" }}
+    >
+      <div id={props.selector?.replace("#", "") || "app"}></div>
+    </div>
   );
-};
+});
