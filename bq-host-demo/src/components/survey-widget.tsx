@@ -17,6 +17,8 @@ export interface BioniqSurveyConfig {
   selector: string;
   // tbd
   additional_data?: Record<string, any>;
+  email_to_prefill?: string;
+  name_to_prefill?: string;
   // listener for host app callback
   onInit: () => void;
 }
@@ -56,11 +58,13 @@ declare global {
 const defaults: BioniqSurveyConfig = {
   questionnaire_key: "bioniq-questionnaire-shopify",
   questionnaire_theme: "blue_orange",
-  callback_url: `https://my-global-dev.bioniq.com/products/bioniq-go`,
+  callback_url: `https://bioniq.com/products/go`,
   distributor_id: 1234,
   country_code: "GB",
   host_context: "react-demo",
   selector: "#app",
+  email_to_prefill: "igor@bioniq.com",
+  // name_to_prefill: "additional details",
   onInit: () => console.log("[Host App] Widget initialized with defaults"),
 };
 
