@@ -29,28 +29,25 @@ export const BioniqQuizWidget = memo((props: any) => {
     const mountId = props.selector?.replace("#", "") || "app";
 
     const startWidget = () => {
-      // Double check the lock inside the timer
       if (hasInitialized.current) return;
 
       const sdk = window.bqSurvey || window.quiz;
       const el = document.getElementById(mountId);
 
       if (el && sdk?.init) {
-        console.log("[Diagnostic] Handshake Success. Mounting...");
-        hasInitialized.current = true; // LOCK SET
+        hasInitialized.current = true;
 
-        const config = {
-          questionnaire_key: "bioniq-questionnaire-shopify",
-          callback_url: "https://bioniq.com/products/go",
-          host_context: "react-demo",
+        const finalConfig = {
+          questionnaire_key: props.questionnaire_key,
+          callback_url: props.callback_url, // Now pulled from your Playground form
+          host_context: props.host_context,
           selector: `#${mountId}`,
-          onInit: () => console.log("[Diagnostic] Widget mounted."),
-          ...props,
+          onInit: props.onInit,
+          ...props, // Overlays everything else
         };
 
-        sdk.init(config);
+        sdk.init(finalConfig);
       } else {
-        console.log("[Diagnostic] Waiting for SDK or DOM...");
         setTimeout(startWidget, 100);
       }
     };

@@ -11,7 +11,7 @@ const DEFAULTS = {
   name_to_prefill: "Igor Bioniq",
   country_code: "GB",
   host_context: "react-demo",
-  callback_url: "https://bioniq.com/products/go",
+  callback_url: "https://bioniq.com/products/go", // Default redirection
   selector: "#app",
   additional_data: JSON.stringify({ source: "direct-mail" }, null, 2),
 };
@@ -47,9 +47,6 @@ export const BioniqPlayground = () => {
       {/* --- SIDEBAR: ADVANCED CONTROLS --- */}
       <div style={sidebarStyle}>
         <h2 style={{ marginBottom: "5px" }}>Bioniq SDK Console</h2>
-        <p style={{ fontSize: "11px", color: "#666", marginBottom: "25px" }}>
-          Reload required to re-hydrate Vue instance.
-        </p>
 
         <form
           onSubmit={handleApply}
@@ -68,28 +65,22 @@ export const BioniqPlayground = () => {
               </option>
               <option value="go_female_preset_quiz">Female Preset</option>
               <option value="go_memory_preset_quiz">Memory Preset</option>
-              <option value="custom">Custom Key (Type below)</option>
             </select>
-            {config.questionnaire_key === "custom" && (
-              <input
-                name="questionnaire_key"
-                placeholder="Enter custom key..."
-                onChange={handleChange}
-                style={{ ...inputStyle, marginTop: "5px" }}
-              />
-            )}
           </section>
 
+          {/* --- NEW: REDIRECTION LOGIC --- */}
           <section>
-            <label style={labelStyle}>UI Theme</label>
-            <select
-              name="questionnaire_theme"
-              value={config.questionnaire_theme}
+            <label style={labelStyle}>Redirection & Handshake</label>
+            <input
+              name="callback_url"
+              placeholder="Callback URL (After finish)"
+              value={config.callback_url}
               onChange={handleChange}
               style={inputStyle}
-            >
-              <option value="blue_orange">Blue Orange (Default)</option>
-            </select>
+            />
+            <div style={{ fontSize: "10px", color: "#555", marginTop: "4px" }}>
+              Redirects here after <code>quizFinished</code>.
+            </div>
           </section>
 
           <section
@@ -100,16 +91,19 @@ export const BioniqPlayground = () => {
             }}
           >
             <div>
-              <label style={labelStyle}>Distributor ID</label>
-              <input
-                name="distributor_id"
-                value={config.distributor_id}
+              <label style={labelStyle}>UI Theme</label>
+              <select
+                name="questionnaire_theme"
+                value={config.questionnaire_theme}
                 onChange={handleChange}
                 style={inputStyle}
-              />
+              >
+                <option value="blue_orange">Blue Orange</option>
+                <option value="dark_mode">Dark Mode</option>
+              </select>
             </div>
             <div>
-              <label style={labelStyle}>Locale (ISO)</label>
+              <label style={labelStyle}>Locale</label>
               <input
                 name="country_code"
                 value={config.country_code}
@@ -121,13 +115,6 @@ export const BioniqPlayground = () => {
 
           <section>
             <label style={labelStyle}>Lead Prefill</label>
-            <input
-              name="name_to_prefill"
-              placeholder="Name"
-              value={config.name_to_prefill}
-              onChange={handleChange}
-              style={{ ...inputStyle, marginBottom: "5px" }}
-            />
             <input
               name="email_to_prefill"
               placeholder="Email"
@@ -145,7 +132,7 @@ export const BioniqPlayground = () => {
               onChange={handleChange}
               style={{
                 ...inputStyle,
-                minHeight: "80px",
+                minHeight: "60px",
                 fontFamily: "monospace",
                 fontSize: "10px",
               }}
@@ -174,17 +161,14 @@ export const BioniqPlayground = () => {
             Status: <strong style={{ color: "#4CAF50" }}>Active</strong>
           </span>
           <span>
-            Context: <strong>{config.host_context}</strong>
-          </span>
-          <span>
-            Target: <strong>{config.selector}</strong>
+            Redirect:{" "}
+            <code style={{ fontSize: "11px" }}>{config.callback_url}</code>
           </span>
         </div>
 
         <div style={widgetCanvasStyle}>
           <BioniqQuizWidget
             {...config}
-            // Parse the JSON string back into an object for the SDK
             additional_data={JSON.parse(config.additional_data || "{}")}
           />
         </div>
@@ -193,13 +177,13 @@ export const BioniqPlayground = () => {
   );
 };
 
-// --- STYLES (Enriched) ---
+// --- STYLES (Keep as before, just added minor tweaks) ---
 const containerStyle: React.CSSProperties = {
   display: "flex",
   minHeight: "100vh",
   background: "#0a0a0a",
-  fontFamily:
-    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+
+  fontFamily: "sans-serif",
 };
 const sidebarStyle: React.CSSProperties = {
   flex: "0 0 340px",
@@ -228,22 +212,22 @@ const widgetCanvasStyle: React.CSSProperties = {
   flex: 1,
   background: "#fff",
   borderRadius: "12px",
-  boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
   overflow: "hidden",
 };
 const labelStyle: React.CSSProperties = {
   fontSize: "10px",
   fontWeight: "bold",
+
   textTransform: "uppercase",
   marginBottom: "6px",
   display: "block",
-  letterSpacing: "0.5px",
 };
 const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "10px",
   background: "#1f1f1f",
   border: "1px solid #333",
+
   borderRadius: "6px",
   fontSize: "13px",
 };
@@ -256,8 +240,6 @@ const applyButtonStyle: React.CSSProperties = {
   borderRadius: "6px",
   cursor: "pointer",
   fontWeight: "bold",
-  fontSize: "14px",
-  transition: "background 0.2s",
 };
 const resetButtonStyle: React.CSSProperties = {
   width: "100%",
@@ -268,5 +250,4 @@ const resetButtonStyle: React.CSSProperties = {
   cursor: "pointer",
   borderRadius: "6px",
   padding: "8px",
-  fontSize: "12px",
 };
