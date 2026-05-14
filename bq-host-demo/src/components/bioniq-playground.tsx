@@ -42,17 +42,15 @@ export const BioniqPlayground = () => {
     window.location.reload();
   };
 
-  const handleReset = () => {
-    localStorage.removeItem(STORAGE_KEY);
-    window.location.reload();
-  };
+  // const handleReset = () => {
+  //   localStorage.removeItem(STORAGE_KEY);
+  //   window.location.reload();
+  // };
 
   return (
     <div style={containerStyle}>
       <div style={sidebarStyle}>
-        <h2 style={{ marginBottom: "20px", color: "#fff" }}>
-          Control Panel
-        </h2>
+        <h2 style={{ marginBottom: "20px", color: "#fff" }}>Control Panel</h2>
 
         <form
           onSubmit={handleApply}
@@ -264,15 +262,15 @@ const mainStyle: React.CSSProperties = {
   flexDirection: "column",
   gap: "20px",
 };
-const statusBarStyle: React.CSSProperties = {
-  display: "flex",
-  gap: "25px",
-  fontSize: "12px",
-  background: "#1a1a1a",
-  padding: "12px 20px",
-  borderRadius: "8px",
-  border: "1px solid #333",
-};
+// const statusBarStyle: React.CSSProperties = {
+//   display: "flex",
+//   gap: "25px",
+//   fontSize: "12px",
+//   background: "#1a1a1a",
+//   padding: "12px 20px",
+//   borderRadius: "8px",
+//   border: "1px solid #333",
+// };
 const widgetCanvasStyle: React.CSSProperties = {
   flex: 1,
   background: "#fff",
@@ -304,13 +302,13 @@ const applyButtonStyle: React.CSSProperties = {
   cursor: "pointer",
   fontWeight: "bold",
 };
-const resetButtonStyle: React.CSSProperties = {
-  width: "100%",
-  background: "transparent",
-  border: "1px solid #333",
-  cursor: "pointer",
-  borderRadius: "6px",
-  padding: "8px",
-  color: "#666",
-  fontSize: "12px",
-};
+// const resetButtonStyle: React.CSSProperties = {
+//   width: "100%",
+//   background: "transparent",
+//   border: "1px solid #333",
+//   cursor: "pointer",
+//   borderRadius: "6px",
+//   padding: "8px",
+//   color: "#666",
+//   fontSize: "12px",
+// };
