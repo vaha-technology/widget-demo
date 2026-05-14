@@ -4,7 +4,7 @@ import { BioniqQuizWidget } from "./survey-widget";
 const STORAGE_KEY = "bq_playground_config";
 
 const DEFAULTS = {
-  questionnaire_key: "hlf_questionnaire",
+  questionnaire_key: "hlf_questionnaire_test",
   questionnaire_theme: "blue_orange",
   distributor_id: "1234",
   email_to_prefill: "igor@bioniq.com",
@@ -61,7 +61,8 @@ export const BioniqPlayground = () => {
               onChange={handleChange}
               style={inputStyle}
             >
-              <option value="hlf_questionnaire">HLF QUIZ</option>
+              <option value="hlf_questionnaire">HLF QUIZ Legacy</option>
+              <option value="hlf_questionnaire_test">HLF QUIZ to be done</option>
               {/* <option value="bioniq-questionnaire-shopify">
                 Shopify Default
               </option>
