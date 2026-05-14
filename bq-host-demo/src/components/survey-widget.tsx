@@ -5,6 +5,7 @@ export interface BioniqSurveyConfig {
   callback_url: string;
   host_context: string;
   selector: string;
+  locale: string;
   onInit: () => void;
   [key: string]: any;
 }
@@ -43,6 +44,7 @@ export const BioniqQuizWidget = memo((props: any) => {
           host_context: props.host_context,
           selector: `#${mountId}`,
           onInit: props.onInit,
+          locale: props.locale,
           ...props, // Overlays everything else
         };
 
