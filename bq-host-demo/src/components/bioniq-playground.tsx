@@ -4,7 +4,7 @@ import { BioniqQuizWidget } from "./survey-widget";
 const STORAGE_KEY = "bq_playground_config";
 
 const DEFAULTS = {
-  questionnaire_key: "bioniq-questionnaire-shopify",
+  questionnaire_key: "hlf_questionnaire",
   questionnaire_theme: "blue_orange",
   distributor_id: "1234",
   email_to_prefill: "igor@bioniq.com",
@@ -60,11 +60,12 @@ export const BioniqPlayground = () => {
               onChange={handleChange}
               style={inputStyle}
             >
-              <option value="bioniq-questionnaire-shopify">
+              <option value="hlf_questionnaire">HLF QUIZ</option>
+              {/* <option value="bioniq-questionnaire-shopify">
                 Shopify Default
               </option>
               <option value="go_female_preset_quiz">Female Preset</option>
-              <option value="go_memory_preset_quiz">Memory Preset</option>
+              <option value="go_memory_preset_quiz">Memory Preset</option> */}
             </select>
           </section>
 
@@ -103,7 +104,7 @@ export const BioniqPlayground = () => {
               </select>
             </div>
             <div>
-              <label style={labelStyle}>Locale</label>
+              <label style={labelStyle}>Country</label>
               <input
                 name="country_code"
                 value={config.country_code}
