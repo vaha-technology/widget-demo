@@ -51,7 +51,7 @@ export const BioniqPlayground = () => {
     <div style={containerStyle}>
       <div style={sidebarStyle}>
         <h2 style={{ marginBottom: "20px", color: "#fff" }}>
-          Bioniq SDK Console
+          Control Panel
         </h2>
 
         <form
