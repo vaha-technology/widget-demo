@@ -9,8 +9,8 @@ const DEFAULTS = {
   distributor_id: "1234",
   email_to_prefill: "igor@bioniq.com",
   name_to_prefill: "Igor Bioniq",
-  country_code: "GB",
-  locale: "pl-PL",
+  country_code: "US",
+  locale: "en",
   host_context: "react-demo",
   callback_url: "https://bioniq.com/products/go", // Default redirection
   selector: "#app",
@@ -127,6 +127,7 @@ export const BioniqPlayground = () => {
               <option value="en-US">en-US</option>
               <option value="en-GB">en-GB</option>
               <option value="pl-PL">pl-PL</option>
+              <option value="ro-RO">ro-RO</option>
               {/* <option value="bioniq-questionnaire-shopify">
                 Shopify Default
               </option>
