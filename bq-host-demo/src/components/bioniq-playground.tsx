@@ -10,6 +10,7 @@ const DEFAULTS = {
   email_to_prefill: "igor@bioniq.com",
   name_to_prefill: "Igor Bioniq",
   country_code: "GB",
+  locale: "pl-PL",
   host_context: "react-demo",
   callback_url: "https://bioniq.com/products/go", // Default redirection
   selector: "#app",
@@ -112,6 +113,25 @@ export const BioniqPlayground = () => {
                 style={inputStyle}
               />
             </div>
+          </section>
+
+          <section>
+            <label style={labelStyle}>Locale</label>
+            <select
+              name="locale"
+              value={config.locale}
+              onChange={handleChange}
+              style={inputStyle}
+            >
+              <option value="en-US">en-US</option>
+              <option value="en-GB">en-GB</option>
+              <option value="pl-PL">pl-PL</option>
+              {/* <option value="bioniq-questionnaire-shopify">
+                Shopify Default
+              </option>
+              <option value="go_female_preset_quiz">Female Preset</option>
+              <option value="go_memory_preset_quiz">Memory Preset</option> */}
+            </select>
           </section>
 
           <section>
