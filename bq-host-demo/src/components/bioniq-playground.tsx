@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BioniqQuizWidget } from "./survey-widget";
 
 const STORAGE_KEY = "bq_playground_config";
@@ -18,6 +18,15 @@ const DEFAULTS = {
 };
 
 export const BioniqPlayground = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Aktualizacja stanu przy zmianie rozmiaru okna
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   // --- UI State ---
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -46,6 +55,105 @@ export const BioniqPlayground = () => {
   //   localStorage.removeItem(STORAGE_KEY);
   //   window.location.reload();
   // };
+  const containerStyle: React.CSSProperties = {
+    display: "flex",
+    flexDirection: isMobile ? "column" : "row",
+    minHeight: "100vh",
+    background: "#0a0a0a",
+    fontFamily: "sans-serif",
+  };
+
+  const sidebarStyle: React.CSSProperties = {
+    flex: isMobile ? "none" : "0 0 280px",
+    width: isMobile ? "100%" : "280px",
+    background: "#141414",
+    padding: isMobile ? "15px" : "25px",
+    borderRight: isMobile ? "none" : "1px solid #222",
+    borderBottom: isMobile ? "1px solid #222" : "none",
+    overflowY: "auto",
+    boxSizing: "border-box",
+  };
+
+  const mainStyle: React.CSSProperties = {
+    flex: 1,
+    padding: isMobile ? "10px" : "20px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    background: "#0a0a0a",
+    height: isMobile ? "auto" : "100vh",
+  };
+
+  const widgetCanvasStyle: React.CSSProperties = {
+    flex: 1,
+    background: "#fff",
+    borderRadius: "12px",
+    overflow: "hidden",
+    minHeight: isMobile ? "600px" : "auto", // Ważne dla mobile
+    display: "flex",
+    flexDirection: "column",
+  };
+
+  const toggleButtonStyle: React.CSSProperties = {
+    fontSize: "11px",
+    color: "#888",
+    cursor: "pointer",
+    padding: "10px 0",
+    userSelect: "none",
+    fontWeight: "bold",
+    textAlign: "center",
+    border: "1px dashed #333",
+    borderRadius: "6px",
+    margin: "10px 0",
+  };
+
+  const advancedContainerStyle: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
+    padding: "15px",
+    background: "#1a1a1a",
+    borderRadius: "8px",
+    border: "1px solid #333",
+    marginBottom: "15px",
+  };
+
+  const labelStyle: React.CSSProperties = {
+    fontSize: "10px",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    marginBottom: "6px",
+    display: "block",
+    color: "#666",
+  };
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    padding: "10px",
+    background: "#1f1f1f",
+    border: "1px solid #333",
+    borderRadius: "6px",
+    fontSize: "13px",
+
+    boxSizing: "border-box",
+  };
+
+  const applyButtonStyle: React.CSSProperties = {
+    width: "100%",
+    padding: "16px",
+    background: "#266431",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontWeight: "bold",
+    color: "#fff",
+    fontSize: "14px",
+  };
+
+  const sectionStyle: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "column",
+  };
 
   return (
     <div style={containerStyle}>
@@ -215,100 +323,3 @@ export const BioniqPlayground = () => {
     </div>
   );
 };
-
-// --- STYLES ---
-
-const toggleButtonStyle: React.CSSProperties = {
-  fontSize: "11px",
-  color: "#888",
-  cursor: "pointer",
-  padding: "5px 0",
-  userSelect: "none",
-  fontWeight: "bold",
-};
-
-const advancedContainerStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "15px",
-  padding: "15px",
-  background: "#1a1a1a",
-  borderRadius: "8px",
-  border: "1px solid #333",
-};
-
-const sectionStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-};
-
-const containerStyle: React.CSSProperties = {
-  display: "flex",
-  minHeight: "100vh",
-  background: "#0a0a0a",
-  fontFamily: "sans-serif",
-};
-const sidebarStyle: React.CSSProperties = {
-  flex: "0 0 340px",
-  background: "#141414",
-  padding: "25px",
-  borderRight: "1px solid #222",
-  overflowY: "auto",
-};
-const mainStyle: React.CSSProperties = {
-  flex: 1,
-  padding: "30px",
-  display: "flex",
-  flexDirection: "column",
-  gap: "20px",
-};
-// const statusBarStyle: React.CSSProperties = {
-//   display: "flex",
-//   gap: "25px",
-//   fontSize: "12px",
-//   background: "#1a1a1a",
-//   padding: "12px 20px",
-//   borderRadius: "8px",
-//   border: "1px solid #333",
-// };
-const widgetCanvasStyle: React.CSSProperties = {
-  flex: 1,
-  background: "#fff",
-  borderRadius: "12px",
-  overflow: "hidden",
-};
-const labelStyle: React.CSSProperties = {
-  fontSize: "10px",
-  fontWeight: "bold",
-  textTransform: "uppercase",
-  marginBottom: "6px",
-  display: "block",
-  color: "#666",
-};
-const inputStyle: React.CSSProperties = {
-  width: "100%",
-  padding: "10px",
-  background: "#1f1f1f",
-  border: "1px solid #333",
-  borderRadius: "6px",
-  fontSize: "13px",
-};
-const applyButtonStyle: React.CSSProperties = {
-  width: "100%",
-  padding: "14px",
-  background: "#266431",
-  border: "none",
-  borderRadius: "6px",
-  cursor: "pointer",
-  fontWeight: "bold",
-};
-// const resetButtonStyle: React.CSSProperties = {
-//   width: "100%",
-//   background: "transparent",
-//   border: "1px solid #333",
-//   cursor: "pointer",
-//   borderRadius: "6px",
-//   padding: "8px",
-//   color: "#666",
-//   fontSize: "12px",
-// };
