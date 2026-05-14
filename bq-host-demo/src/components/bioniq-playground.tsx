@@ -12,12 +12,16 @@ const DEFAULTS = {
   country_code: "US",
   locale: "en",
   host_context: "react-demo",
-  callback_url: "https://bioniq.com/products/go", // Default redirection
+  callback_url: "https://bioniq.com/products/go",
   selector: "#app",
   additional_data: JSON.stringify({ source: "direct-mail" }, null, 2),
 };
 
 export const BioniqPlayground = () => {
+  // --- UI State ---
+  const [showAdvanced, setShowAdvanced] = useState(false);
+
+  // --- Logic State ---
   const [config, setConfig] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     return saved ? JSON.parse(saved) : DEFAULTS;
@@ -45,47 +49,15 @@ export const BioniqPlayground = () => {
 
   return (
     <div style={containerStyle}>
-      {/* --- SIDEBAR: ADVANCED CONTROLS --- */}
       <div style={sidebarStyle}>
-        <h2 style={{ marginBottom: "5px" }}>Bioniq SDK Console</h2>
+        <h2 style={{ marginBottom: "20px", color: "#fff" }}>
+          Bioniq SDK Console
+        </h2>
 
         <form
           onSubmit={handleApply}
-          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+          style={{ display: "flex", flexDirection: "column", gap: "20px" }}
         >
-          <section>
-            <label style={labelStyle}>Core Identity</label>
-            <select
-              name="questionnaire_key"
-              value={config.questionnaire_key}
-              onChange={handleChange}
-              style={inputStyle}
-            >
-              <option value="hlf_questionnaire">HLF QUIZ Legacy</option>
-              <option value="hlf_questionnaire_test">HLF QUIZ to be done</option>
-              {/* <option value="bioniq-questionnaire-shopify">
-                Shopify Default
-              </option>
-              <option value="go_female_preset_quiz">Female Preset</option>
-              <option value="go_memory_preset_quiz">Memory Preset</option> */}
-            </select>
-          </section>
-
-          {/* --- NEW: REDIRECTION LOGIC --- */}
-          <section>
-            <label style={labelStyle}>Redirection & Handshake</label>
-            <input
-              name="callback_url"
-              placeholder="Callback URL (After finish)"
-              value={config.callback_url}
-              onChange={handleChange}
-              style={inputStyle}
-            />
-            <div style={{ fontSize: "10px", color: "#555", marginTop: "4px" }}>
-              Redirects here after <code>quizFinished</code>.
-            </div>
-          </section>
-
           <section
             style={{
               display: "grid",
@@ -94,100 +66,146 @@ export const BioniqPlayground = () => {
             }}
           >
             <div>
-              <label style={labelStyle}>UI Theme</label>
-              <select
-                name="questionnaire_theme"
-                value={config.questionnaire_theme}
-                onChange={handleChange}
-                style={inputStyle}
-              >
-                <option value="blue_orange">Blue Orange</option>
-                <option value="dark_mode">Dark Mode</option>
-              </select>
-            </div>
-            <div>
               <label style={labelStyle}>Country</label>
-              <input
+
+              <select
                 name="country_code"
                 value={config.country_code}
                 onChange={handleChange}
                 style={inputStyle}
-              />
+              >
+                <option value="US">United States</option>
+                <option value="ES">Spain</option>
+                <option value="PL">Poland</option>
+                <option value="RO">Romania</option>
+              </select>
+            </div>
+            <div>
+              <label style={labelStyle}>Locale</label>
+              <select
+                name="locale"
+                value={config.locale}
+                onChange={handleChange}
+                style={inputStyle}
+              >
+                <option value="es-ES">es-ES</option>
+                <option value="en-US">en-US</option>
+                <option value="en-GB">en-GB</option>
+                <option value="pl-PL">pl-PL</option>
+                <option value="ro-RO">ro-RO</option>
+              </select>
             </div>
           </section>
 
-          <section>
-            <label style={labelStyle}>Locale</label>
-            <select
-              name="locale"
-              value={config.locale}
-              onChange={handleChange}
-              style={inputStyle}
-            >
-              <option value="en-US">en-US</option>
-              <option value="en-GB">en-GB</option>
-              <option value="pl-PL">pl-PL</option>
-              <option value="ro-RO">ro-RO</option>
-              {/* <option value="bioniq-questionnaire-shopify">
-                Shopify Default
-              </option>
-              <option value="go_female_preset_quiz">Female Preset</option>
-              <option value="go_memory_preset_quiz">Memory Preset</option> */}
-            </select>
-          </section>
+          {/* --- ADVANCED SETTINGS TOGGLE --- */}
+          <div
+            onClick={() => setShowAdvanced(!showAdvanced)}
+            style={toggleButtonStyle}
+          >
+            {showAdvanced
+              ? "▼ Hide Advanced Settings"
+              : "▶ Show Advanced Settings"}
+          </div>
 
-          <section>
-            <label style={labelStyle}>Lead Prefill</label>
-            <input
-              name="email_to_prefill"
-              placeholder="Email"
-              value={config.email_to_prefill}
-              onChange={handleChange}
-              style={inputStyle}
-            />
-          </section>
+          {/* --- HIDDEN ADVANCED SECTION --- */}
+          {showAdvanced && (
+            <div style={advancedContainerStyle}>
+              {/* --- ALWAYS VISIBLE SECTION --- */}
+              <section style={sectionStyle}>
+                <label style={labelStyle}>Choose Survey</label>
+                <select
+                  name="questionnaire_key"
+                  value={config.questionnaire_key}
+                  onChange={handleChange}
+                  style={inputStyle}
+                >
+                  <option value="hlf_questionnaire">HLF QUIZ Legacy</option>
+                  <option value="hlf_questionnaire_test">
+                    HLF QUIZ - In Progress
+                  </option>
+                </select>
+              </section>
+              <section style={sectionStyle}>
+                <label style={labelStyle}>UI Theme</label>
+                <select
+                  name="questionnaire_theme"
+                  value={config.questionnaire_theme}
+                  onChange={handleChange}
+                  style={inputStyle}
+                >
+                  <option value="blue_orange">Blue Orange</option>
+                  <option value="dark_mode">Dark Mode</option>
+                </select>
+              </section>
 
-          <section>
-            <label style={labelStyle}>Additional Data (JSON)</label>
-            <textarea
-              name="additional_data"
-              value={config.additional_data}
-              onChange={handleChange}
-              style={{
-                ...inputStyle,
-                minHeight: "60px",
-                fontFamily: "monospace",
-                fontSize: "10px",
-              }}
-            />
-          </section>
+              <section style={sectionStyle}>
+                <label style={labelStyle}>Redirection URL</label>
+                <input
+                  name="callback_url"
+                  value={config.callback_url}
+                  onChange={handleChange}
+                  style={inputStyle}
+                />
+              </section>
 
-          <div style={{ marginTop: "10px" }}>
+              <section style={sectionStyle}>
+                <label style={labelStyle}>Lead Prefill (Email)</label>
+                <input
+                  name="email_to_prefill"
+                  value={config.email_to_prefill}
+                  onChange={handleChange}
+                  style={inputStyle}
+                />
+              </section>
+
+              <section style={sectionStyle}>
+                <label style={labelStyle}>Additional Data (JSON)</label>
+                <textarea
+                  name="additional_data"
+                  value={config.additional_data}
+                  onChange={handleChange}
+                  style={{
+                    ...inputStyle,
+                    minHeight: "80px",
+                    fontFamily: "monospace",
+                    fontSize: "10px",
+                  }}
+                />
+              </section>
+            </div>
+          )}
+
+          <div
+            style={{
+              marginTop: "10px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+            }}
+          >
             <button type="submit" style={applyButtonStyle}>
-              Apply & Re-mount
+              Apply new settings
             </button>
-            <button
+            {/* <button
               type="button"
               onClick={handleReset}
               style={resetButtonStyle}
             >
-              Reset to Defaults
-            </button>
+              Reset Defaults
+            </button> */}
           </div>
         </form>
       </div>
 
-      {/* --- MAIN PREVIEW AREA --- */}
       <div style={mainStyle}>
-        <div style={statusBarStyle}>
+        {/* <div style={statusBarStyle}>
           <span>
             Status: <strong style={{ color: "#4CAF50" }}>Active</strong>
           </span>
           <span>
-            Redirect:{" "}
-            <code style={{ fontSize: "11px" }}>{config.callback_url}</code>
+            Config: <code>{config.questionnaire_key}</code>
           </span>
-        </div>
+        </div> */}
 
         <div style={widgetCanvasStyle}>
           <BioniqQuizWidget
@@ -200,12 +218,36 @@ export const BioniqPlayground = () => {
   );
 };
 
-// --- STYLES (Keep as before, just added minor tweaks) ---
+// --- STYLES ---
+
+const toggleButtonStyle: React.CSSProperties = {
+  fontSize: "11px",
+  color: "#888",
+  cursor: "pointer",
+  padding: "5px 0",
+  userSelect: "none",
+  fontWeight: "bold",
+};
+
+const advancedContainerStyle: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "15px",
+  padding: "15px",
+  background: "#1a1a1a",
+  borderRadius: "8px",
+  border: "1px solid #333",
+};
+
+const sectionStyle: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+};
+
 const containerStyle: React.CSSProperties = {
   display: "flex",
   minHeight: "100vh",
   background: "#0a0a0a",
-
   fontFamily: "sans-serif",
 };
 const sidebarStyle: React.CSSProperties = {
@@ -240,17 +282,16 @@ const widgetCanvasStyle: React.CSSProperties = {
 const labelStyle: React.CSSProperties = {
   fontSize: "10px",
   fontWeight: "bold",
-
   textTransform: "uppercase",
   marginBottom: "6px",
   display: "block",
+  color: "#666",
 };
 const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "10px",
   background: "#1f1f1f",
   border: "1px solid #333",
-
   borderRadius: "6px",
   fontSize: "13px",
 };
@@ -258,7 +299,6 @@ const applyButtonStyle: React.CSSProperties = {
   width: "100%",
   padding: "14px",
   background: "#266431",
-
   border: "none",
   borderRadius: "6px",
   cursor: "pointer",
@@ -266,11 +306,11 @@ const applyButtonStyle: React.CSSProperties = {
 };
 const resetButtonStyle: React.CSSProperties = {
   width: "100%",
-  marginTop: "12px",
   background: "transparent",
   border: "1px solid #333",
-
   cursor: "pointer",
   borderRadius: "6px",
   padding: "8px",
+  color: "#666",
+  fontSize: "12px",
 };
