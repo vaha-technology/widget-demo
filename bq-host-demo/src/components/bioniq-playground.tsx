@@ -8,7 +8,7 @@ const DEFAULTS = {
   questionnaire_theme: "blue_orange",
   distributor_id: "1234",
   email_to_prefill: "igor@bioniq.com",
-  name_to_prefill: "Igor Bioniq",
+  name_to_prefill: "TEST01",
   country_code: "US",
   locale: "en",
   host_context: "react-demo",
