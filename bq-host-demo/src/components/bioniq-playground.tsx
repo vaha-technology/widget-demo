@@ -5,7 +5,7 @@ const STORAGE_KEY = "bq_playground_config";
 
 const DEFAULTS = {
   questionnaire_key: "hlf_questionnaire_test",
-  questionnaire_theme: "blue_orange",
+  questionnaire_theme: "dark_mode",
   distributor_id: "1234",
   email_to_prefill: "igor@bioniq.com",
   name_to_prefill: "TEST01",
@@ -239,8 +239,8 @@ export const BioniqPlayground = () => {
                   onChange={handleChange}
                   style={inputStyle}
                 >
-                  <option value="blue_orange">Blue Orange</option>
                   <option value="dark_mode">Dark Mode</option>
+                  <option value="blue_orange">Blue Orange</option>
                 </select>
               </section>
 
