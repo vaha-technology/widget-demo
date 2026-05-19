@@ -255,6 +255,15 @@ export const BioniqPlayground = () => {
               </section>
 
               <section style={sectionStyle}>
+                <label style={labelStyle}>Lead Prefill (Name)</label>
+                <input
+                  name="name_to_prefill"
+                  value={config.name_to_prefill}
+                  onChange={handleChange}
+                  style={inputStyle}
+                />
+              </section>
+              <section style={sectionStyle}>
                 <label style={labelStyle}>Lead Prefill (Email)</label>
                 <input
                   name="email_to_prefill"
