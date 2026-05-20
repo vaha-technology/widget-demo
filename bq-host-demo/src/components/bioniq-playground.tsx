@@ -194,10 +194,19 @@ export const BioniqPlayground = () => {
                 onChange={handleChange}
                 style={inputStyle}
               >
+                <option value="cs-CZ">cs-CZ</option>
+                <option value="de-AT">de-AT</option>
+                <option value="de-DE">de-DE</option>
+                <option value="de-CH">de-CH</option>
+                <option value="fr-CH">fr-CH</option>
+                <option value="it-CH">it-CH</option>
                 <option value="es-ES">es-ES</option>
                 <option value="en-US">en-US</option>
+                <option value="es-US">es-US</option>
                 <option value="en-GB">en-GB</option>
+                <option value="it-IT">it-IT</option>
                 <option value="pl-PL">pl-PL</option>
+                <option value="pt-PT">pt-PT</option>
                 <option value="ro-RO">ro-RO</option>
               </select>
             </div>
