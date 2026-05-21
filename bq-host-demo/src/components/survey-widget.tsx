@@ -40,12 +40,12 @@ export const BioniqQuizWidget = memo((props: any) => {
 
         const finalConfig = {
           questionnaire_key: props.questionnaire_key,
-          callback_url: props.callback_url, // Now pulled from your Playground form
+          callback_url: props.callback_url,
           host_context: props.host_context,
           selector: `#${mountId}`,
           onInit: props.onInit,
           locale: props.locale,
-          ...props, // Overlays everything else
+          ...props,
         };
 
         sdk.init(finalConfig);

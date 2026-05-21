@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bioniq Survey SDK - Barebone Host Demo</title>
+
+    <link
+      rel="stylesheet"
+      href="https://bioniq-quiz-herbalife-staging.s3.eu-central-1.amazonaws.com/by-quiz-style.css"
+    />
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #0a0a0a;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      header {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .widget-viewport {
+        width: 100%;
+        max-width: 800px;
+        min-height: 700px;
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        margin-bottom: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Bioniq Survey Injection</h1>
+      <p style="color: #666; margin: 5px 0">
+        Barebone Vanilla JS Environment. Run it with "npx serve".
+      </p>
+    </header>
+
+    <div class="widget-viewport">
+      <div id="bq-survey-mount"></div>
+    </div>
+
+    <script
+      async
+      src="https://bioniq-quiz-herbalife-staging.s3.eu-central-1.amazonaws.com/by-quiz-main.umd.js"
+      onload="initBioniqWidget()"
+    ></script>
+
+    <script>
+      window.addEventListener("vue_app_ready", function (e) {
+        console.log("🚀 [Host] Widget reported: Ready & Hydrated!", e.detail);
+      });
+
+      window.addEventListener("bqSurvey:quizFinished", function (e) {
+        console.log("🏁 [Host] Widget reported: Quiz Finished!", e.detail);
+        alert(
+          "Quiz Completed! Formula Draft UUID: " + e.detail.formula_draft_uuid
+        );
+      });
+
+      function initBioniqWidget(attempts = 0) {
+        const maxAttempts = 20;
+        const sdk = window.bqSurvey || window.quiz;
+
+        if (sdk && typeof sdk.init === "function") {
+          console.log("🎯 [Host] Handshake successfully resolved!");
+
+          const defaultPayload = {
+            questionnaire_key: "hlf_survey",
+            distributor_id: "1234",
+            email_to_prefill: "igor@bioniq.com",
+            name_to_prefill: "Igor Bioniq",
+            country_code: "US",
+            locale: "en",
+            host_context: "vanilla-demo",
+            selector: "#bq-survey-mount",
+            onInit: function () {
+              console.log("🎯 [Host] Widget execution confirmed.");
+            },
+          };
+
+          sdk.init(defaultPayload);
+        } else {
+          if (attempts < maxAttempts) {
+            console.warn(
+              `⏳ [Host] Namespace not found yet. Retrying evaluation... (${
+                attempts + 1
+              }/${maxAttempts})`
+            );
+            setTimeout(() => initBioniqWidget(attempts + 1), 100);
+          } else {
+            console.error(
+              "❌ [Host] Critical Failure: window.bqSurvey.init or window.quiz.init not found after 2 seconds."
+            );
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
