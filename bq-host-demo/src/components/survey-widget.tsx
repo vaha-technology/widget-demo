@@ -79,7 +79,7 @@ export const BioniqQuizWidget = memo((props: any) => {
   return (
     <div
       className="bioniq-widget-wrapper"
-      style={{ height: "100%", width: "100%" }}
+      style={{ height: "100%", width: "100%", overflowY: "auto" }}
     >
       <div id={props.selector?.replace("#", "") || "app"}></div>
     </div>
