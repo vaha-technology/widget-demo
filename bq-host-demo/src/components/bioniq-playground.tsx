@@ -183,7 +183,7 @@ export const BioniqPlayground = () => {
                 <option value="US">United States</option>
                 <option value="ES">Spain</option>
                 <option value="PL">Poland</option>
-                <option value="RO">Romania</option>
+                <option value="SK">Slovakia</option>
               </select>
             </div>
             <div>
@@ -207,7 +207,7 @@ export const BioniqPlayground = () => {
                 <option value="it-IT">it-IT</option>
                 <option value="pl-PL">pl-PL</option>
                 <option value="pt-PT">pt-PT</option>
-                <option value="ro-RO">ro-RO</option>
+                <option value="sk-SK">sk-SK</option>
               </select>
             </div>
           </section>
