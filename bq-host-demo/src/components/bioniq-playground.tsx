@@ -184,6 +184,8 @@ export const BioniqPlayground = () => {
                 <option value="ES">Spain</option>
                 <option value="PL">Poland</option>
                 <option value="SK">Slovakia</option>
+                <option value="IT">Italy</option>
+                <option value="CH">Switzerland</option>
               </select>
             </div>
             <div>
