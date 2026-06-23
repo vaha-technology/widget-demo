@@ -210,6 +210,7 @@ export const BioniqPlayground = () => {
                 <option value="pl-PL">pl-PL</option>
                 <option value="pt-PT">pt-PT</option>
                 <option value="sk-SK">sk-SK</option>
+                <option value="sk-SK">nl-NL</option>
               </select>
             </div>
           </section>
