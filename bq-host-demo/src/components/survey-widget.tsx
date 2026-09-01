@@ -48,8 +48,9 @@ export const BioniqQuizWidget = memo((props: any) => {
           ...props,
         };
 
-        console.log('host')
-        console.log(finalConfig)
+        console.log("host");
+        console.log("flight");
+        console.log(finalConfig);
 
         sdk.init(finalConfig);
       } else {
