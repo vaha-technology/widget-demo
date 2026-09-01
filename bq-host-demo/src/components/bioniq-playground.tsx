@@ -11,7 +11,7 @@ const DEFAULTS = {
   name_to_prefill: "TEST01",
   country_code: "US",
   locale: "en",
-  host_context: "react-demo",
+  host_context: "flight",
   callback_url: "https://bioniq.com/products/go",
   selector: "#app",
   additional_data: JSON.stringify({ source: "direct-mail" }, null, 2),
