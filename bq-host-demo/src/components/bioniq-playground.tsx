@@ -180,12 +180,16 @@ export const BioniqPlayground = () => {
                 onChange={handleChange}
                 style={inputStyle}
               >
+                <option value="BE">BE</option>
+                <option value="FR">FR</option>
+                <option value="RO">RO</option>
                 <option value="US">United States</option>
                 <option value="ES">Spain</option>
                 <option value="PL">Poland</option>
                 <option value="SK">Slovakia</option>
                 <option value="IT">Italy</option>
                 <option value="CH">Switzerland</option>
+                <option value="GB">GB</option>
               </select>
             </div>
             <div>
@@ -196,6 +200,10 @@ export const BioniqPlayground = () => {
                 onChange={handleChange}
                 style={inputStyle}
               >
+                <option value="nl-BE">nl-BE</option>
+                <option value="fr-BE">fr-BE</option>
+                <option value="fr-FR">fr-FR</option>
+                <option value="ro-RO">nl-NL</option>
                 <option value="cs-CZ">cs-CZ</option>
                 <option value="de-AT">de-AT</option>
                 <option value="de-DE">de-DE</option>
