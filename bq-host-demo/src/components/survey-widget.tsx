@@ -48,6 +48,9 @@ export const BioniqQuizWidget = memo((props: any) => {
           ...props,
         };
 
+        console.log('host')
+        console.log(finalConfig)
+
         sdk.init(finalConfig);
       } else {
         setTimeout(startWidget, 100);
