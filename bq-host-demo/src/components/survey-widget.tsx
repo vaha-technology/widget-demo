@@ -47,7 +47,7 @@ export const BioniqQuizWidget = memo((props: any) => {
           locale: props.locale,
           ...props,
         };
-
+        console.log(props)
         console.log("host");
         console.log("flight");
         console.log(finalConfig);

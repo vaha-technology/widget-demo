@@ -6,7 +6,7 @@ const STORAGE_KEY = "bq_playground_config";
 const DEFAULTS = {
   questionnaire_key: "hlf_questionnaire_test",
   questionnaire_theme: "dark_mode",
-  distributor_id: "1234",
+  distributor_id: "10Y2174329",
   email_to_prefill: "igor@bioniq.com",
   name_to_prefill: "TEST01",
   country_code: "US",
@@ -343,6 +343,7 @@ export const BioniqPlayground = () => {
         </div> */}
 
         <div style={widgetCanvasStyle}>
+       
           <BioniqQuizWidget
             {...config}
             additional_data={JSON.parse(config.additional_data || "{}")}
